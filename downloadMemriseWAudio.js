@@ -58,7 +58,7 @@
 			var blob = new Blob([data], {type: 'mp3'})
 			var elem = window.document.createElement('a');
 			elem.href = window.URL.createObjectURL(blob);
-			var filename = filepath.replace('/','_');
+			var filename = filepath.slice(filepath.indexOf('.com')+5).replace(/\//g,'_');
 			elem.download = `memrise_${filename}`;
 			document.body.appendChild(elem);
 			elem.click();
@@ -76,9 +76,9 @@
 	// format as csv
 	.then(words => {
 		//console.log(word.audio_reference) //Check if the base url works in this case
-		words.map(word => downloadAudio(word.audio_reference))//Enable to download Audio
+		//words.map(word => downloadAudio(word.audio_reference))//Enable to download Audio
 		console.log(words.length + ' words')
-		return words.map(word => word.translation + '\t' + word.original + '\t[memrise_' + word.audio_reference + ']\n').join('') //for 4 data things
+		return words.map(word => word.translation + '\t' + word.original + '\t[memrise_' + word.audio_reference.slice(word.audio_reference.indexOf('.com')+5).replace(/\//g,'_') + ']\n').join('') //for 4 data things
 		//return words.map(word => word.translation + '\t' + word.original + '\t[memrise_' + word.audio_reference + ']\n').join('') //for 3 data things
 	})
 	.then(console.log)
